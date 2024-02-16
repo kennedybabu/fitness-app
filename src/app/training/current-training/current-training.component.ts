@@ -12,7 +12,6 @@ export class CurrentTrainingComponent implements OnInit {
   progress = 0
   timer!: number | any
 
-
   constructor(private dialog: MatDialog,
     private trainingService: TrainingService){}
 

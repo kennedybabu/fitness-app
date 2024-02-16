@@ -51,4 +51,9 @@ export class TrainingService {
             this.exerciseChanged.next(null)
         }
     }
+
+
+    getAllExercises() {
+        return this.exercises.slice()
+    }
 }

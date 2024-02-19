@@ -1,7 +1,9 @@
+import { Observable } from 'rxjs';
 import { Exercise } from './../exercise.model';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit, inject} from '@angular/core';
 import { TrainingService } from '../training.service';
 import { NgForm } from '@angular/forms';
+import { Firestore, collection, collectionData, getDocs, query } from "@angular/fire/firestore"
 
 @Component({
   selector: 'app-new-training',
@@ -10,9 +12,16 @@ import { NgForm } from '@angular/forms';
 })
 export class NewTrainingComponent implements OnInit {
   
-  exrcises: Exercise [] = []
+  exercises$!: Observable<Exercise[]>
+  firestore: Firestore = inject(Firestore)
 
-  constructor(private trainingService: TrainingService){}
+  constructor(private trainingService: TrainingService,
+    private db: Firestore){
+      const itemCollection = collection(this.firestore, 'vailableExercises')
+      const any = collectionData(itemCollection) 
+
+      console.log(any)
+    }
 
   onStartTraining(form: NgForm) {
     this.trainingService.startExercise(form.value.exercise)
@@ -20,7 +29,25 @@ export class NewTrainingComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.exrcises = this.trainingService.getAvailableExercises()
-  }
+    // this.exrcises = this.trainingService.getAvailableExercises()
+    // this.firestore.collection('availableExercises').valueChanges().subscribe(result => {
+    //   console.log(result)
+    // })
+    // this.getExercises()
 
+    // this.db.collection('availableExercises').valueChanges().subscribe(result => {
+    //   console.log(result)
+    // })
+
+    const results = getDocs(query(collection(this.db, 'availableExercises')))
+
+    console.log(results)
+
+  }
+  
+  // async getExercises() {
+  //   return (
+  //     await getDocs(query(collection(this.db, 'availableExercises')))
+  //   ).docChanges()
+  // }
 }

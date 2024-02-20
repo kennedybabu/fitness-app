@@ -14,13 +14,13 @@ export class NewTrainingComponent implements OnInit {
   
   exercises$!: Observable<Exercise[]>
   firestore: Firestore = inject(Firestore)
+  list$ = collectionData(collection(this.db, 'availableExercises')) as Observable<Exercise[]>
 
   constructor(private trainingService: TrainingService,
-    private db: Firestore){
+    private db: Firestore, 
+    ){
       const itemCollection = collection(this.firestore, 'vailableExercises')
-      const any = collectionData(itemCollection) 
-
-      console.log(any)
+      const any = collectionData(itemCollection)      
     }
 
   onStartTraining(form: NgForm) {
@@ -29,25 +29,7 @@ export class NewTrainingComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.exrcises = this.trainingService.getAvailableExercises()
-    // this.firestore.collection('availableExercises').valueChanges().subscribe(result => {
-    //   console.log(result)
-    // })
-    // this.getExercises()
-
-    // this.db.collection('availableExercises').valueChanges().subscribe(result => {
-    //   console.log(result)
-    // })
-
-    const results = getDocs(query(collection(this.db, 'availableExercises')))
-
-    console.log(results)
-
+    
   }
   
-  // async getExercises() {
-  //   return (
-  //     await getDocs(query(collection(this.db, 'availableExercises')))
-  //   ).docChanges()
-  // }
 }
